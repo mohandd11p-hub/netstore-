@@ -134,18 +134,25 @@ let products = {};
 let cart = [];
 let currentCategory = 'all';
 let db = null;
+let isAdmin = false; // افتراضياً الزائر ليس أدمن
 
-// تهيئة التبديل بين الشاشات فوراً
 function showAdminPage() { 
-  const password = prompt("أدخل كلمة المرور للدخول إلى لوحة التحكم:");
-   if (password === "2211") { 
+  if (!isAdmin) {
+    const password = prompt("أدخل كلمة المرور للدخول إلى لوحة التحكم:");
+    if (password === "2211") { 
+      isAdmin = true;
+      showToast("تم تسجيل الدخول كأدمن بنجاح 🔓");
+      document.getElementById('storePg').style.display = 'none'; 
+      document.getElementById('adminPg').style.display = 'block'; 
+      renderProducts(); // إعادة رسم المنتجات لإظهار أزرار التعديل والحذف
+    } else if (password !== null) {
+      alert("كلمة المرور غير صحيحة!");
+    }
+  } else {
     document.getElementById('storePg').style.display = 'none'; 
     document.getElementById('adminPg').style.display = 'block'; 
-  } else if (password !== null) {
-    alert("كلمة المرور غير صحيحة!");
   }
 }
-
 
 function showStorePage() { 
   document.getElementById('adminPg').style.display = 'none'; 
@@ -162,7 +169,7 @@ function showToast(msg) {
   setTimeout(() => toast.remove(), 3000);
 }
 
-// محاولة تهيئة Firebase بدون تعطيل الموقع
+// محاولة تهيئة Firebase
 try {
   const firebaseConfig = {
     databaseURL: "https://techni-store-default-rtdb.firebaseio.com"
@@ -226,10 +233,12 @@ function renderProducts() {
             <span class="iconify" data-icon="mdi:cart-plus"></span> إضافة للسلة
           </button>
 
+          ${isAdmin ? `
           <div class="card-actions">
             <button class="act-edit" onclick="editProduct('${p.id}')" title="تعديل"><span class="iconify" data-icon="mdi:pencil"></span></button>
             <button class="act-del" onclick="deleteProduct('${p.id}')" title="حذف"><span class="iconify" data-icon="mdi:trash-can"></span></button>
           </div>
+          ` : ''}
         </div>
       </div>
     </div>
