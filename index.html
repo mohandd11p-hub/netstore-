@@ -137,9 +137,15 @@ let db = null;
 
 // تهيئة التبديل بين الشاشات فوراً
 function showAdminPage() { 
-  document.getElementById('storePg').style.display = 'none'; 
-  document.getElementById('adminPg').style.display = 'block'; 
+  const password = prompt("أدخل كلمة المرور للدخول إلى لوحة التحكم:");
+   if (password === "2211") { 
+    document.getElementById('storePg').style.display = 'none'; 
+    document.getElementById('adminPg').style.display = 'block'; 
+  } else if (password !== null) {
+    alert("كلمة المرور غير صحيحة!");
+  }
 }
+
 
 function showStorePage() { 
   document.getElementById('adminPg').style.display = 'none'; 
