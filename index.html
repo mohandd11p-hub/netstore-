@@ -42,7 +42,7 @@ function showAdminPage() {
     if(!isAdmin) {
         const pass = prompt("كلمة المرور:");
         if(pass === "2211") { isAdmin = true; renderProducts(); document.getElementById('storePg').style.display='none'; document.getElementById('adminPg').style.display='block'; }
-        else { alert("خطأ!"); }
+        else { alert("كلمة المرور خاطئة!"); }
     } else { document.getElementById('storePg').style.display='none'; document.getElementById('adminPg').style.display='block'; }
 }
 
@@ -82,6 +82,16 @@ function saveProduct() {
 }
 
 function deleteProduct(id) { if(confirm("حذف؟")) db.ref('products/'+id).remove(); }
+
+function editProduct(id) {
+    const p = products[id];
+    document.getElementById('fN').value = p.name;
+    document.getElementById('fC').value = p.category || '';
+    document.getElementById('fP').value = p.price;
+    document.getElementById('fS').value = p.stock || 0;
+    document.getElementById('fI').value = p.img || '';
+    showAdminPage();
+}
 </script>
 </body>
 </html>
