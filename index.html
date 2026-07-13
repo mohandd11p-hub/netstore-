@@ -42,15 +42,15 @@ textarea.fi{resize:none}
 
 <nav style="position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;align-items:center;padding:0 16px;background:rgba(3,3,4,.88);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05);">
 <div style="max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;">
-<div id="logoBtn" style="display:flex;align-items:center;gap:10px;cursor:pointer;"><div style="width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(to top right,#6366f1,#a855f7);"><span class="iconify" data-icon="mdi:store" style="color:#fff;font-size:16px;"></span></div><span class="gt" style="font-size:16px;font-weight:600;">تقني ستور</span></div>
+<div id="logoBtn" onclick="showStorePage()" style="display:flex;align-items:center;gap:10px;cursor:pointer;"><div style="width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(to top right,#6366f1,#a855f7);"><span class="iconify" data-icon="mdi:store" style="color:#fff;font-size:16px;"></span></div><span class="gt" style="font-size:16px;font-weight:600;">تقني ستور</span></div>
 
 <div style="display:flex;align-items:center;gap:12px;">
-<button id="btnCart" style="position:relative;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);cursor:pointer;">
+<button id="btnCart" onclick="toggleCart(true)" style="position:relative;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);cursor:pointer;">
   <span class="iconify" data-icon="mdi:cart-outline" style="color:#a5b4fc;font-size:20px;"></span>
   <span id="cartBadge" style="position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:10px;font-weight:bold;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;">0</span>
 </button>
 
-<button id="btnAdmin" style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);cursor:pointer;"><span class="iconify" data-icon="mdi:cog" style="color:#f59e0b;font-size:18px;"></span></button>
+<button id="btnAdmin" onclick="showAdminPage()" style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);cursor:pointer;"><span class="iconify" data-icon="mdi:cog" style="color:#f59e0b;font-size:18px;"></span></button>
 </div></div></nav>
 
 <div id="storePg">
@@ -104,7 +104,7 @@ textarea.fi{resize:none}
 
 <div id="adminPg" style="display:none;position:relative;z-index:10;padding-top:60px;min-height:100vh;">
 <div style="max-width:1200px;margin:0 auto;padding:24px 16px;">
-<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px;"><h1 class="gt" style="font-size:20px;font-weight:600;">لوحة التحكم بالمنتجات</h1><button id="btnBack" class="bc" style="padding:8px 20px;border-radius:10px;font-size:12px;font-weight:600;">العودة للمتجر</button></div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px;"><h1 class="gt" style="font-size:20px;font-weight:600;">لوحة التحكم بالمنتجات</h1><button onclick="showStorePage()" class="bc" style="padding:8px 20px;border-radius:10px;font-size:12px;font-weight:600;">العودة للمتجر</button></div>
 
 <div class="g" style="border-radius:14px;padding:20px;margin-bottom:24px;">
 <h2 id="fTitle" style="font-size:15px;font-weight:600;margin-bottom:16px;">إضافة / تعديل منتج</h2>
@@ -125,35 +125,26 @@ textarea.fi{resize:none}
 <div style="grid-column: 1 / -1;"><label style="font-size:11px;color:#94a3b8;">الوصف</label><textarea id="fD" class="fi" rows="3"></textarea></div>
 </div>
 <div style="display:flex;gap:10px;margin-top:16px;">
-<button id="btnSave" class="bca" style="padding:10px 24px;border-radius:10px;font-size:13px;font-weight:600;">حفظ المنتج</button>
-<button id="btnCancelEdit" style="padding:10px 20px;border-radius:10px;font-size:13px;color:#94a3b8;background:rgba(255,255,255,.05);display:none;cursor:pointer;">إلغاء</button>
+<button onclick="saveProduct()" class="bca" style="padding:10px 24px;border-radius:10px;font-size:13px;font-weight:600;">حفظ المنتج</button>
+<button id="btnCancelEdit" onclick="resetForm()" style="padding:10px 20px;border-radius:10px;font-size:13px;color:#94a3b8;background:rgba(255,255,255,.05);display:none;cursor:pointer;">إلغاء</button>
 </div></div></div></div>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyD57qErbXdvuMTTZ6k4gpU8X_EXAMPLE", 
-  authDomain: "techni-store.firebaseapp.com",
-  databaseURL: "https://techni-store-default-rtdb.firebaseio.com",
-  projectId: "techni-store",
-  storageBucket: "techni-store.appspot.com",
-  messagingSenderId: "692097126000",
-  appId: "1:692097126000:web:f38cf2d",
-  measurementId: "G-534KEVZFQT"
-};
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-const db = firebase.database();
-
 let products = {};
 let cart = [];
 let currentCategory = 'all';
+let db = null;
 
-db.ref('products').on('value', (snapshot) => {
-  products = snapshot.val() || {};
-  renderProducts();
-});
+// تهيئة التبديل بين الشاشات فوراً
+function showAdminPage() { 
+  document.getElementById('storePg').style.display = 'none'; 
+  document.getElementById('adminPg').style.display = 'block'; 
+}
+
+function showStorePage() { 
+  document.getElementById('adminPg').style.display = 'none'; 
+  document.getElementById('storePg').style.display = 'block'; 
+}
 
 function showToast(msg) {
   const container = document.getElementById('toasts');
@@ -163,6 +154,24 @@ function showToast(msg) {
   toast.innerText = msg;
   container.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
+}
+
+// محاولة تهيئة Firebase بدون تعطيل الموقع
+try {
+  const firebaseConfig = {
+    databaseURL: "https://techni-store-default-rtdb.firebaseio.com"
+  };
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  db = firebase.database();
+  db.ref('products').on('value', (snapshot) => {
+    products = snapshot.val() || {};
+    renderProducts();
+  });
+} catch(e) {
+  console.log("Firebase status:", e);
+  renderProducts();
 }
 
 function filterCategory(cat, btn) {
@@ -187,7 +196,7 @@ function renderProducts() {
   }
 
   if (list.length === 0) {
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#64748b;">لا توجد منتجات مطابقة حالياً.</div>`;
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#64748b;">لا توجد منتجات في هذا القسم حالياً.</div>`;
     return;
   }
 
@@ -207,4 +216,172 @@ function renderProducts() {
             <span style="font-size:10px;padding:3px 8px;border-radius:6px;background:${p.stock > 0 ? 'rgba(52,211,153,.1)' : 'rgba(239,68,68,.1)'};color:${p.stock > 0 ? '#34d399' : '#f87171'};">${p.stock > 0 ? 'متوفر' : 'نفد'}</span>
           </div>
           
-          <button onclick="addToCart('${p.id}')" ${
+          <button onclick="addToCart('${p.id}')" ${p.stock <= 0 ? 'disabled' : ''} class="bca" style="width:100%;padding:8px;border-radius:8px;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;opacity:${p.stock <= 0 ? 0.5 : 1}">
+            <span class="iconify" data-icon="mdi:cart-plus"></span> إضافة للسلة
+          </button>
+
+          <div class="card-actions">
+            <button class="act-edit" onclick="editProduct('${p.id}')" title="تعديل"><span class="iconify" data-icon="mdi:pencil"></span></button>
+            <button class="act-del" onclick="deleteProduct('${p.id}')" title="حذف"><span class="iconify" data-icon="mdi:trash-can"></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addToCart(id) {
+  const p = products[id];
+  if(!p) return;
+  const exist = cart.find(item => item.id === id);
+  if(exist) {
+    exist.qty++;
+  } else {
+    cart.push({ id, name: p.name, price: p.price, qty: 1 });
+  }
+  updateCartUI();
+  showToast('تمت إضافة المنتج للسلة 🛒');
+}
+
+function updateCartUI() {
+  const badge = document.getElementById('cartBadge');
+  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+  if(totalQty > 0) {
+    badge.innerText = totalQty;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
+
+  const container = document.getElementById('cartItems');
+  if(cart.length === 0) {
+    container.innerHTML = `<div style="text-align:center;color:#64748b;padding:20px;">السلة فارغة حالياً</div>`;
+  } else {
+    container.innerHTML = cart.map(item => `
+      <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.05);">
+        <div>
+          <div style="font-size:12px;font-weight:600;">${item.name}</div>
+          <div style="font-size:11px;color:#a5b4fc;">${Number(item.price).toLocaleString()} د.ع</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button onclick="changeQty('${item.id}', -1)" style="width:24px;height:24px;border-radius:4px;background:rgba(255,255,255,.1);color:#fff;border:none;cursor:pointer;">-</button>
+          <span style="font-size:12px;">${item.qty}</span>
+          <button onclick="changeQty('${item.id}', 1)" style="width:24px;height:24px;border-radius:4px;background:rgba(255,255,255,.1);color:#fff;border:none;cursor:pointer;">+</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+  document.getElementById('cartTotal').innerText = `${Number(totalPrice).toLocaleString()} د.ع`;
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0) {
+    cart = cart.filter(i => i.id !== id);
+  }
+  updateCartUI();
+}
+
+function toggleCart(show) {
+  document.getElementById('cartModal').style.display = show ? 'flex' : 'none';
+}
+
+function checkoutWhatsApp() {
+  if(cart.length === 0) {
+    showToast('السلة فارغة!');
+    return;
+  }
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
+
+  if(!name || !phone || !address) {
+    showToast('يرجى كتابة الاسم ورقم الهاتف والعنوان الكامل');
+    return;
+  }
+
+  let text = `🛒 *طلب جديد من متجر تقني ستور*\n\n`;
+  text += `👤 *العميل:* ${name}\n📞 *الهاتف:* ${phone}\n📍 *العنوان:* ${address}\n\n`;
+  text += `📦 *الطلبات:*\n`;
+  cart.forEach(item => {
+    text += `- ${item.name} (عدد ${item.qty}) | ${Number(item.price * item.qty).toLocaleString()} د.ع\n`;
+  });
+  const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+  text += `\n💰 *المجموع الكلي:* ${Number(totalPrice).toLocaleString()} د.ع`;
+
+  window.open(`https://wa.me/9647819038440?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function saveProduct() {
+  const name = document.getElementById('fN').value.trim();
+  const category = document.getElementById('fC').value;
+  const price = parseFloat(document.getElementById('fP').value);
+  const stock = parseInt(document.getElementById('fS').value);
+  const img = document.getElementById('fI').value.trim();
+  const desc = document.getElementById('fD').value.trim();
+  const editId = document.getElementById('editHid').value;
+
+  if(!name || isNaN(price) || isNaN(stock)) {
+    showToast('يرجى ملء البيانات المطلوبة');
+    return;
+  }
+
+  if (db) {
+    if (editId) {
+      db.ref('products/' + editId).update({ name, category, price, stock, img, desc }).then(() => {
+        showToast('تم تعديل المنتج بنجاح ✨');
+        showStorePage();
+      });
+    } else {
+      db.ref('products').push({ name, category, price, stock, img, desc }).then(() => {
+        showToast('تمت إضافة المنتج بنجاح 🚀');
+        showStorePage();
+      });
+    }
+  } else {
+    showToast('تعذر الاتصال بقاعدة البيانات حالياً');
+  }
+
+  resetForm();
+}
+
+function editProduct(id) {
+  const p = products[id];
+  if (!p) return;
+  document.getElementById('editHid').value = id;
+  document.getElementById('fN').value = p.name;
+  document.getElementById('fC').value = p.category || 'other';
+  document.getElementById('fP').value = p.price;
+  document.getElementById('fS').value = p.stock;
+  document.getElementById('fI').value = p.img || '';
+  document.getElementById('fD').value = p.desc || '';
+  
+  document.getElementById('fTitle').innerText = 'تعديل المنتج الحالي';
+  document.getElementById('btnCancelEdit').style.display = 'block';
+  showAdminPage();
+}
+
+function deleteProduct(id) {
+  if (confirm('هل أنت متأكد من حذف هذا المنتج نهائياً؟')) {
+    if(db) db.ref('products/' + id).remove().then(() => showToast('تم حذف المنتج'));
+  }
+}
+
+function resetForm() {
+  document.getElementById('editHid').value = '';
+  document.getElementById('fN').value = '';
+  document.getElementById('fC').value = 'routers';
+  document.getElementById('fP').value = '';
+  document.getElementById('fS').value = '';
+  document.getElementById('fI').value = '';
+  document.getElementById('fD').value = '';
+  document.getElementById('fTitle').innerText = 'إضافة / تعديل منتج';
+  document.getElementById('btnCancelEdit').style.display = 'none';
+}
+</script>
+</body>
+</html>
