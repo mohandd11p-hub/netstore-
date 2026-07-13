@@ -8,7 +8,6 @@
 <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
@@ -27,6 +26,8 @@ body{background:#030304;color:#fff;margin:0}
 .fi{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:.75rem;padding:10px 16px;font-size:14px;color:#fff;transition:all .3s;width:100%;font-family:inherit}
 .fi::placeholder{color:#475569}.fi:focus{border-color:rgba(99,102,241,.5)!important;outline:none}
 textarea.fi{resize:none}
+.cat-btn{padding:8px 16px;border-radius:10px;font-size:12px;cursor:pointer;transition:all .2s;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#94a3b8;white-space:nowrap;}
+.cat-btn.active{background:rgba(99,102,241,.2);border-color:rgba(99,102,241,.5);color:#fff;font-weight:600;}
 .card-actions{display:flex;align-items:center;justify-content:center;gap:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.05);margin-top:10px;}
 .card-actions button{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;transition:all .2s;background:rgba(255,255,255,.05);color:#94a3b8;}
 .card-actions .act-edit:hover{background:rgba(245,158,11,.2);color:#fbbf24;}
@@ -38,7 +39,6 @@ textarea.fi{resize:none}
 <div id="toasts" style="position:fixed;bottom:20px;left:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;"></div>
 <a href="https://wa.me/9647819038440" target="_blank" class="bw" style="position:fixed;bottom:20px;left:20px;z-index:100;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;text-decoration:none;"><span class="iconify" data-icon="mdi:whatsapp" style="font-size:26px;"></span></a>
 
-<!-- NAV -->
 <nav style="position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;align-items:center;padding:0 16px;background:rgba(3,3,4,.88);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05);">
 <div style="max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;">
 <div id="logoBtn" style="display:flex;align-items:center;gap:10px;cursor:pointer;"><div style="width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(to top right,#6366f1,#a855f7);"><span class="iconify" data-icon="mdi:store" style="color:#fff;font-size:16px;"></span></div><span class="gt" style="font-size:16px;font-weight:600;">تقني ستور</span></div>
@@ -46,14 +46,23 @@ textarea.fi{resize:none}
 <button id="btnAdmin" style="width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);cursor:pointer;"><span class="iconify" data-icon="mdi:cog" style="color:#f59e0b;font-size:17px;"></span></button>
 </div></div></nav>
 
-<!-- STORE PAGE -->
 <div id="storePg">
 <main style="position:relative;z-index:10;padding-top:60px;">
-<section style="padding:48px 16px;"><div style="max-width:1200px;margin:0 auto;">
+
+<section style="padding:20px 16px 0;max-width:1200px;margin:0 auto;">
+<div id="catList" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;">
+  <button class="cat-btn active" onclick="filterCategory('all')">الكل</button>
+  <button class="cat-btn" onclick="filterCategory('routers')">الراوترات والشبكات</button>
+  <button class="cat-btn" onclick="filterCategory('accessories')">الإكسسوارات</button>
+  <button class="cat-btn" onclick="filterCategory('cables')">الكيبلات والوصلات</button>
+  <button class="cat-btn" onclick="filterCategory('other')">أخرى</button>
+</div>
+</section>
+
+<section style="padding:24px 16px 48px;"><div style="max-width:1200px;margin:0 auto;">
 <div id="pGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;"></div>
 </div></section></main></div>
 
-<!-- ADMIN PAGE -->
 <div id="adminPg" style="display:none;position:relative;z-index:10;padding-top:60px;min-height:100vh;">
 <div style="max-width:1200px;margin:0 auto;padding:24px 16px;">
 <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px;"><h1 class="gt" style="font-size:20px;font-weight:600;">لوحة التحكم بالمنتجات</h1><button id="btnBack" class="bc" style="padding:8px 20px;border-radius:10px;font-size:12px;font-weight:600;">العودة للمتجر</button></div>
@@ -63,6 +72,14 @@ textarea.fi{resize:none}
 <input type="hidden" id="editHid" value="">
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
 <div><label style="font-size:11px;color:#94a3b8;">اسم المنتج *</label><input type="text" id="fN" class="fi"></div>
+<div><label style="font-size:11px;color:#94a3b8;">القسم *</label>
+<select id="fC" class="fi">
+  <option value="routers">الراوترات والشبكات</option>
+  <option value="accessories">الإكسسوارات</option>
+  <option value="cables">الكيبلات والوصلات</option>
+  <option value="other">أخرى</option>
+</select>
+</div>
 <div><label style="font-size:11px;color:#94a3b8;">السعر (د.ع) *</label><input type="number" id="fP" class="fi"></div>
 <div><label style="font-size:11px;color:#94a3b8;">الكمية *</label><input type="number" id="fS" class="fi"></div>
 <div style="grid-column: 1 / -1;"><label style="font-size:11px;color:#94a3b8;">رابط الصورة</label><input type="text" id="fI" class="fi"></div>
@@ -74,7 +91,7 @@ textarea.fi{resize:none}
 </div></div></div></div>
 
 <script>
-// إعدادات Firebase الخاصة بمشروعك techni-store
+// إعدادات Firebase الخاصة بمشروعك
 const firebaseConfig = {
   apiKey: "AIzaSyD57qErbXdvuMTTZ6k4gpU8X_EXAMPLE", 
   authDomain: "techni-store.firebaseapp.com",
@@ -86,15 +103,14 @@ const firebaseConfig = {
   measurementId: "G-534KEVZFQT"
 };
 
-// Initialize Firebase
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 const db = firebase.database();
 
 let products = {};
+let currentCategory = 'all';
 
-// جلب المنتجات وإعادة تحميلها بشكل لحظي وسحابي مباشر
 db.ref('products').on('value', (snapshot) => {
   products = snapshot.val() || {};
   renderProducts();
@@ -110,12 +126,24 @@ function showToast(msg) {
   setTimeout(() => toast.remove(), 3000);
 }
 
+function filterCategory(cat) {
+  currentCategory = cat;
+  const btns = document.querySelectorAll('.cat-btn');
+  btns.forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  renderProducts();
+}
+
 function renderProducts() {
   const grid = document.getElementById('pGrid');
-  const list = Object.keys(products).map(key => ({ id: key, ...products[key] }));
+  let list = Object.keys(products).map(key => ({ id: key, ...products[key] }));
+
+  if (currentCategory !== 'all') {
+    list = list.filter(p => (p.category || 'other') === currentCategory);
+  }
 
   if (list.length === 0) {
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#64748b;">لا توجد منتجات حالياً. اضغط على زر الترس ⚙️ بالأعلى لإضافة منتجك الأول!</div>`;
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#64748b;">لا توجد منتجات في هذا القسم حالياً.</div>`;
     return;
   }
 
@@ -147,6 +175,7 @@ function renderProducts() {
 
 document.getElementById('btnSave').onclick = () => {
   const name = document.getElementById('fN').value.trim();
+  const category = document.getElementById('fC').value;
   const price = parseFloat(document.getElementById('fP').value);
   const stock = parseInt(document.getElementById('fS').value);
   const img = document.getElementById('fI').value.trim();
@@ -159,12 +188,12 @@ document.getElementById('btnSave').onclick = () => {
   }
 
   if (editId) {
-    db.ref('products/' + editId).update({ name, price, stock, img, desc }).then(() => {
+    db.ref('products/' + editId).update({ name, category, price, stock, img, desc }).then(() => {
       showToast('تم تعديل المنتج بنجاح ✨');
       showStorePage();
     });
   } else {
-    db.ref('products').push({ name, price, stock, img, desc }).then(() => {
+    db.ref('products').push({ name, category, price, stock, img, desc }).then(() => {
       showToast('تمت إضافة المنتج بنجاح 🚀');
       showStorePage();
     });
@@ -178,6 +207,7 @@ function editProduct(id) {
   if (!p) return;
   document.getElementById('editHid').value = id;
   document.getElementById('fN').value = p.name;
+  document.getElementById('fC').value = p.category || 'other';
   document.getElementById('fP').value = p.price;
   document.getElementById('fS').value = p.stock;
   document.getElementById('fI').value = p.img || '';
@@ -197,6 +227,7 @@ function deleteProduct(id) {
 function resetForm() {
   document.getElementById('editHid').value = '';
   document.getElementById('fN').value = '';
+  document.getElementById('fC').value = 'routers';
   document.getElementById('fP').value = '';
   document.getElementById('fS').value = '';
   document.getElementById('fI').value = '';
