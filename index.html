@@ -6,27 +6,32 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; padding: 20px; }
-        .product-card { border: 1px solid #333; padding: 15px; border-radius: 10px; margin: 10px; display: inline-block; width: 200px; vertical-align: top; }
-        img { width: 100%; height: 120px; object-fit: cover; }
-        .admin-only { display: none; }
+        body { background: #000; color: #fff; font-family: sans-serif; padding: 10px; }
+        .product-card { border: 1px solid #444; padding: 10px; margin: 10px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
-    <button onclick="login()">⚙️ إعدادات</button>
-    <div id="products-container"></div>
+    <button onclick="checkAdmin()">⚙️ إعدادات</button>
+    <div id="pGrid"></div>
 
     <script>
         let isAdmin = false;
+        
+        // محاولة الاتصال بـ Firebase
+        const firebaseConfig = { databaseURL: "https://techni-store-default-rtdb.firebaseio.com" };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function login() {
+        function checkAdmin() {
             const pass = prompt("كلمة المرور:");
             if(pass === "2211") {
                 isAdmin = true;
+                alert("تم تسجيل الدخول كأدمن!");
                 render();
-            } else { alert("خطأ!"); }
+            } else {
+                alert("كلمة مرور خاطئة!");
+            }
         }
 
         db.ref('products').on('value', (snap) => {
@@ -35,18 +40,21 @@
         });
 
         function render() {
-            const container = document.getElementById('products-container');
-            container.innerHTML = Object.keys(window.products).map(id => {
+            const container = document.getElementById('pGrid');
+            container.innerHTML = Object.keys(window.products || {}).map(id => {
                 const p = window.products[id];
                 return `
                     <div class="product-card">
-                        <img src="${p.img || 'https://via.placeholder.com/150'}">
-                        <h3>${p.name}</h3>
-                        <p>السعر: ${p.price}</p>
+                        <h3>${p.name || 'منتج'}</h3>
+                        <p>السعر: ${p.price || 0}</p>
                         ${isAdmin ? `<button onclick="del('${id}')">🗑️ حذف</button>` : ''}
                     </div>
                 `;
             }).join('');
+        }
+        
+        function del(id) {
+            if(confirm("هل تريد الحذف؟")) db.ref('products/'+id).remove();
         }
     </script>
 </body>
