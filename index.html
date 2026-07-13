@@ -18,13 +18,19 @@ body{background:#030304;color:#fff;margin:0}
 .g{background:rgba(255,255,255,.03);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08)}
 .g:hover{background:rgba(255,255,255,.06);border-color:rgba(99,102,241,.3)}
 .gt{background:linear-gradient(135deg,#fff,#a5b4fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.bc{background:#fff;color:#000;transition:all .3s;cursor:pointer;border:none}\.bc:hover{box-shadow:0 0 20px rgba(255,255,255,.3);transform:scale(1.03)}
-.bca{background:linear-gradient(135deg,#4F46E5,#6366f1);transition:all .3s;cursor:pointer;border:none;color:#fff}\.bca:hover{box-shadow:0 6px 16px rgba(99,102,241,.4);transform:translateY(-2px)}
-.bw{background:linear-gradient(135deg,#25D366,#128C7E);transition:all .3s;cursor:pointer;border:none;color:#fff}\.bw:hover{box-shadow:0 6px 16px rgba(37,211,102,.4);transform:translateY(-2px)}
-.pc{transition:all .5s cubic-bezier(.16,1,.3,1);cursor:pointer}\.pc:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.4)}
-.pc:hover .pi{transform:scale(1.05)}\.pi{transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.bc{background:#fff;color:#000;transition:all .3s;cursor:pointer;border:none}
+.bc:hover{box-shadow:0 0 20px rgba(255,255,255,.3);transform:scale(1.03)}
+.bca{background:linear-gradient(135deg,#4F46E5,#6366f1);transition:all .3s;cursor:pointer;border:none;color:#fff}
+.bca:hover{box-shadow:0 6px 16px rgba(99,102,241,.4);transform:translateY(-2px)}
+.bw{background:linear-gradient(135deg,#25D366,#128C7E);transition:all .3s;cursor:pointer;border:none;color:#fff}
+.bw:hover{box-shadow:0 6px 16px rgba(37,211,102,.4);transform:translateY(-2px)}
+.pc{transition:all .5s cubic-bezier(.16,1,.3,1);cursor:pointer}
+.pc:hover {transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.4)}
+.pc:hover .pi{transform:scale(1.05)}
+.pi{transition:transform .5s cubic-bezier(.16,1,.3,1)}
 .fi{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:.75rem;padding:10px 16px;font-size:14px;color:#fff;transition:all .3s;width:100%;font-family:inherit}
-.fi::placeholder{color:#475569}\.fi:focus{border-color:rgba(99,102,241,.5)!important;outline:none}
+.fi::placeholder{color:#475569}
+.fi:focus{border-color:rgba(99,102,241,.5)!important;outline:none}
 select.fi{background:#1e1b4b;color:#fff;}
 textarea.fi{resize:none}
 .cat-btn{padding:8px 16px;border-radius:10px;font-size:12px;cursor:pointer;transition:all .2s;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#94a3b8;white-space:nowrap;}
@@ -104,50 +110,4 @@ textarea.fi{resize:none}
 </div>
 
 <div id="cartModal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.7);backdrop-filter:blur(5px);justify-content:flex-end;">
-<div style="width:100%;max-width:420px;background:#090a0f;height:100%;padding:20px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(255,255,255,.1);">
-  <div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:12px;">
-      <h2 style="font-size:16px;font-weight:700;" class="gt">سلة المشتريات</h2>
-      <button onclick="toggleCart(false)" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:20px;">✕</button>
-    </div>
-    <div id="cartItems" style="max-height:50vh;overflow-y:auto;display:flex;flex-direction:column;gap:12px;"></div>
-  </div>
-
-  <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:16px;">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;font-weight:700;">
-      <span>المجموع الكلي:</span>
-      <span id="cartTotal" class="gt" style="font-size:18px;">0 د.ع</span>
-    </div>
-    
-    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
-      <input type="text" id="custName" placeholder="الاسم الكامل *" class="fi" style="font-size:12px;padding:8px 12px;">
-      <input type="text" id="custPhone" placeholder="رقم الهاتف *" class="fi" style="font-size:12px;padding:8px 12px;">
-      <input type="text" id="custAddress" placeholder="العنوان بالتفصيل *" class="fi" style="font-size:12px;padding:8px 12px;">
-    </div>
-
-    <button onclick="checkoutWhatsApp()" class="bw" style="width:100%;padding:12px;border-radius:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;">
-      <span class="iconify" data-icon="mdi:whatsapp" style="font-size:20px;"></span> إرسال الطلب عبر واتساب
-    </button>
-  </div>
-</div>
-</div>
-
-<div id="adminPg" style="display:none;position:relative;z-index:10;padding-top:60px;min-height:100vh;">
-<div style="max-width:1200px;margin:0 auto;padding:24px 16px;">
-<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px;"><h1 class="gt" style="font-size:20px;font-weight:600;">لوحة التحكم بالمنتجات</h1><button onclick="showStorePage()" class="bc" style="padding:8px 20px;border-radius:10px;font-size:12px;font-weight:600;">العودة للمتجر</button></div>
-
-<div class="g" style="border-radius:14px;padding:20px;margin-bottom:24px;">
-<h2 id="fTitle" style="font-size:15px;font-weight:600;margin-bottom:16px;">إضافة / تعديل منتج</h2>
-<input type="hidden" id="editHid" value="">
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
-<div><label style="font-size:11px;color:#94a3b8;">اسم المنتج *</label><input type="text" id="fN" class="fi"></div>
-<div><label style="font-size:11px;color:#94a3b8;">القسم *</label>
-<select id="fC" class="fi">
-  <option value="routers">الراوترات والشبكات</option>
-  <option value="accessories">الإكسسوارات</option>
-  <option value="cables">الكيبلات والوصلات</option>
-  <option value="other">أخرى</option>
-</select>
-</div>
-<div><label style="font-size:11px;color:#94a3b8;">السعر (د.ع) *</label><input type="number" id="fP" class="fi"></div>
-<div><label style="font-size:11px;color:#94a
+<div style="width
